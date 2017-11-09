@@ -1,0 +1,8 @@
+VERSION
+target/
+*.iml
+*.ipr
+*.iws
+*.log
+src/main/docker/*.jar
+src/main/java/**/Version.java
