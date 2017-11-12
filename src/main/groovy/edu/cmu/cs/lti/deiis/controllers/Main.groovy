@@ -155,12 +155,37 @@ class Main {
         return 'status'
     }
 
-    @GetMapping("/show")
+    @GetMapping("/list")
     String list(Model model) {
-        List<Record> data = database.findAll()
-        logger.info("There are {} records in the database.", data.size())
+        List<Map> data = []
+        try
+        {
+            data = database.findAll()
+            String message = "There are ${data.size()} records in the database."
+            logger.info(message)
+//            model.addAttribute('message', message)
+        }
+        catch (Throwable e) {
+            logger.error("Unable to query the database.", e)
+            model.addAttribute('message', e.message)
+            model.addAttribute('heading', 'Error')
+            model.addAttribute('href', '/baseline/summary')
+            model.addAttribute('label', 'Back')
+            return 'status'
+        }
+//        model.addAttribute('data', data)
+        Map record = [
+                id: '1',
+                evaluator:'suderman',
+                question:'1',
+                reference:'gold',
+                type:'summary',
+                version:'submission',
+                readability:'5',
+                repetition:'5'
+        ]
         model.addAttribute('data', data)
-        return 'list'
+        return "test"
     }
 
     @GetMapping(value = "/raw", produces = 'text/plain')

@@ -91,10 +91,12 @@ div.header nav ul li {
         */
 }
 div.header nav ul li .active {
-  background: #fbe9eb;
+  background: #AD1F2B;
+  color: white;
 }
 div.header nav ul li:hover {
-  backgroud: #AD1F2B;
+  /* background-color: @theme; */
+  background: #AD1F2B;
 }
 div.header nav ul li:hover ul {
   display: block;
@@ -111,7 +113,7 @@ div.header nav ul ul {
   position: absolute;
   top: 100%;
   left: 0;
-  background: white;
+  background: #fbe9eb;
   padding: 0;
 }
 div.header nav ul ul li {
@@ -119,7 +121,8 @@ div.header nav ul ul li {
   width: 12rem;
 }
 div.header nav ul ul li:hover {
-  background: #fbe9eb;
+  font-weight: bold;
+  background-color: #fbe9eb;
 }
 div.header nav ul ul a {
   color: black;
@@ -195,7 +198,7 @@ div.content table tr:last-child td:first-child {
 div.content table tr:last-child td:last-child {
   border-bottom-right-radius: 5px;
 }
-div.content table.grid tr:nth-child(even) {
+div.content table.grid tr:nth-child(odd) {
   background-color: #fbe9eb;
 }
 div.content .slidercontainer {

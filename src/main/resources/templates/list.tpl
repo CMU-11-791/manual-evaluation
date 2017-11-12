@@ -2,7 +2,7 @@ layout 'layouts/main.groovy',
     title: "Evaluation",
     content: {
         h1 'Evaluation'
-        table(class:grid) {
+        table(class:'grid') {
             tr {
                 th 'ID'
                 th 'Evaluator'
@@ -24,6 +24,7 @@ layout 'layouts/main.groovy',
                 }
             }
         }
+        div(class:'clear', '')
         if (link != null) {
             a(class:'button', href:link, 'Back')
         }

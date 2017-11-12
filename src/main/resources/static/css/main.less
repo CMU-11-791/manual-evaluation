@@ -108,7 +108,8 @@ div.header {
         margin: 0;
         padding: 0;
         .active {
-          background: @shade;
+          background: @theme;
+          color: white;
         }
         /*
         &:hover {
@@ -120,7 +121,8 @@ div.header {
         */
       }
       li:hover {
-        backgroud: @theme;
+        /* background-color: @theme; */
+        background: @theme;
         ul {
           display:block;
         }
@@ -137,13 +139,14 @@ div.header {
         position: absolute;
         top: 100%;
         left: 0;
-        background: white;
+        background: @shade;
         padding: 0;
         li {
           float: none;
           width: 12rem;
           &:hover {
-            background: @shade;
+            font-weight: bold;
+            background-color: @shade;
           }
         }
         a {
@@ -218,7 +221,7 @@ div.content {
 
   table.grid {
     tr {
-      &:nth-child(even) { background-color: @shade; }
+      &:nth-child(odd) { background-color: @shade; }
     }
   }
 

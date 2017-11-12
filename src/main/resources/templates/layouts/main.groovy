@@ -30,7 +30,7 @@ html {
                     li {
                         a(href:'#', 'View')
                         ul {
-                            li { a(href:'/show', 'List' ) }
+                            li { a(href:'/list', 'List' ) }
                             li { a href:'/raw', 'Raw output'}
                         }
                     }

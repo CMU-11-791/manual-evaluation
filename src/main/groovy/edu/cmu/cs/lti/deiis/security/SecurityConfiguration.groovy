@@ -24,7 +24,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         logger.info("Configuring security.")
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/about", "/question", '/css/**', '/js/**', '/images/**', '/show', '/raw').permitAll()
+                .antMatchers("/about", "/question", '/css/**', '/js/**', '/images/**', '/show', '/list', '/raw').permitAll()
                 .antMatchers("/", "/gold/**", "/baseline/**", "/update", "/save").hasRole('USER')
 //                .antMatchers("/", "/gold/**", "/baseline/**", "/update").permitAll()
                 .antMatchers("/admin").hasRole('ADMIN')

@@ -1,7 +1,7 @@
 layout 'layouts/main.groovy',
     title: 'Upload status',
     content: {
-        h1 'Upload Status'
+        h1 heading ?: 'Upload Status'
         if (message != null) {
             p message
         }
