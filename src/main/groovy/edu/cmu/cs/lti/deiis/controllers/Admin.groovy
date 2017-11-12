@@ -14,6 +14,16 @@ class Admin {
     @GetMapping('/admin')
     String admin() {
         logger.info('/admin')
-        return "admin"
+        return "admin/admin"
+    }
+
+    @GetMapping('/admin/test')
+    String test() {
+        return 'admin/test'
+    }
+
+    @GetMapping('/admin/form')
+    String form() {
+        return 'admin/form'
     }
 }

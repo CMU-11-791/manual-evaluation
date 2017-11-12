@@ -1,68 +1,39 @@
-layout 'layouts/main.groovy',
+layout 'layouts/login.groovy',
     title: 'CMU 11-791',
     content: {
-        div(class:'column') {
-            h3 'Baseline Evaluation'
-            ol {
-                li {
-                    a(href:'/baseline/summary', 'Summary')
+        form(action:'/upload', method:'post', enctype:'multipart/form-data') {
+            h1 'Data Upload'
+            table {
+                tr {
+                    td class:'first-column', 'Select a file'
+                    td { input(type:'file', name:'file') }
                 }
-                li {
-                    a(href:'/baseline/factoid', 'Factoid')
+                tr {
+                    td 'Reference Type'
+                    td {
+                        select(id:'ref', name:'ref') {
+                            option selected:true, value:'baseline', 'Baseline'
+                            option value:'gold', 'Gold standard'
+                        }
+                    }
                 }
-                li {
-                    a(href:'/baseline/yesno', 'Yes/No')
+                tr {
+                    td 'Question Type'
+                    td {
+                        select(id:'type', name:'type') {
+                            option value:'summary', 'Summary'
+                            option value:'factoid', 'Factoid'
+                            option value:'list', 'List'
+                            option value:'yesno'm 'Yes/No'
+                        }
+                    }
                 }
-                li {
-                    a(href:'/baseline/list', 'List')
-                }
-            }
-        }
-        div(class:'column') {
-            h3 'Gold Standard Evaluation'
-            ol {
-                li {
-                    a(href:'/gold/summary', 'Summary')
-                }
-                li {
-                    a(href:'/gold/factoid', 'Factoid')
-                }
-                li {
-                    a(href:'/gold/yesno', 'Yes/No')
-                }
-                li {
-                    a(href:'/gold/list', 'List')
-                }
-            }
-        }
-        /*
-        form(action:'/update', method:'post') {
-            div {
-                h1 'Question'
-                select(id:'question', name:'question', onchange:'update_answers(event)') {
-                    questions.each { q ->
-                        option value:q.id, q.body
+                tr {
+                    td(colspan:'2') {
+                        input(type:'submit', class:'button', value:'Upload', '')
+                        a(class:'button', href: '/', 'Cancel')
                     }
                 }
             }
-            div(class:'column') {
-                h1 'Exact Answer'
-                div(id:'exact-answer') { p { questions[0].exact ?: 'None provided.' } }
-                h1 'Ideal Answer'
-                div(id:'ideal-answer') { p { questions[0].ideal ?: 'None provided.' } }
-            }
-            div(class:'column') {
-                h1 'Candidate Answer'
-                div(id:'candidate-answer', '')
-            }
-            div(class:'clear, center') {
-                div(class:'slidercontainer') {
-                    input(type:'range', min:'1', max:'5', value:'3', class:'slider', id:'score-slider', onchange:'update_score(this.value)')
-                    span(id:'score-display', '3')
-
-                }
-                button(type:'submit', class:'button', 'Record')
-            }
         }
-        */
     }

@@ -5,7 +5,8 @@ $(document).ready(function() {
         console.log("AJAX returned data" + data);
         $('#exact-answer').html(data.exact);
         $('#ideal-answer').html(data.ideal);
-        $('#candidate-answer').html(data.candidate)
+        $('#candidate-exact').html(data.candidateExact)
+        $('#candidate-ideal').html(data.candidateIdeal)
     });
 });
 
@@ -16,7 +17,8 @@ function update_answers() {
         console.log("AJAX returned data" + data);
         $('#exact-answer').html(data.exact);
         $('#ideal-answer').html(data.ideal);
-        $('#candidate-answer').html(data.candidate);
+        $('#candidate-exact').html(data.candidateExact)
+        $('#candidate-ideal').html(data.candidateIdeal)
     });
 
 }

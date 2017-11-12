@@ -16,6 +16,8 @@ Run the following commands in the root directory of the project, that is, the di
 
 ### Generating CSS
 
+This only needs to be done when the `main.less` file is updated.  This may not be required if your IDE automatically compiles .less files into .css files (e.g. IntelliJ)
+
 ```bash
 $> cd src/main/resources/static/css
 $> lessc main.less main.css
@@ -31,13 +33,14 @@ $> mvn package
 
 ```bash
 $> cp target/service.jar src/main/docker
+$> cd src/main/docker
 $> docker build -t deiis/evaluator .
 ```
 
 ### Pushing The Docker Image
 
 ```bash
-$> cp target/service.jar src/main/docker
+$> cd src/main/docker
 $> docker tag deiis/evaluator docker.lappsgrid.org/deiis/evaluator
 $> docker push docker.lappsgrid.org/deiis/evaluator
 ```

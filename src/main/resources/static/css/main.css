@@ -63,6 +63,69 @@ div.header h2 {
   padding-bottom: 2.25rem;
   text-align: center;
 }
+div.header nav {
+  margin-left: 10%;
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+div.header nav ul {
+  list-style: none;
+  position: relative;
+  float: left;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+div.header nav ul li {
+  position: relative;
+  float: left;
+  margin: 0;
+  padding: 0;
+  /*
+        &:hover {
+          backgroud: @theme;
+          ul {
+            display: block;
+          }
+        }
+        */
+}
+div.header nav ul li .active {
+  background: #fbe9eb;
+}
+div.header nav ul li:hover {
+  backgroud: #AD1F2B;
+}
+div.header nav ul li:hover ul {
+  display: block;
+}
+div.header nav ul a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  line-height: 32px;
+  padding: 0 15px;
+}
+div.header nav ul ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  padding: 0;
+}
+div.header nav ul ul li {
+  float: none;
+  width: 12rem;
+}
+div.header nav ul ul li:hover {
+  background: #fbe9eb;
+}
+div.header nav ul ul a {
+  color: black;
+  line-height: 120%;
+  padding: 10px 15px;
+}
 div.header .logout {
   text-align: right;
   padding-right: 1em;
@@ -109,6 +172,7 @@ div.content table tr {
   padding: 0;
   margin: 0;
   vertical-align: top;
+  /* &:nth-child(even) { background-color: @shade; } */
 }
 div.content table tr th,
 div.content table tr td {
@@ -125,14 +189,14 @@ div.content table tr th:first-child {
 div.content table tr th:last-child {
   border-top-right-radius: 5px;
 }
-div.content table tr:nth-child(even) {
-  background-color: #f7d4d7;
-}
 div.content table tr:last-child td:first-child {
   border-bottom-left-radius: 5px;
 }
 div.content table tr:last-child td:last-child {
   border-bottom-right-radius: 5px;
+}
+div.content table.grid tr:nth-child(even) {
+  background-color: #fbe9eb;
 }
 div.content .slidercontainer {
   width: 100%;
@@ -193,7 +257,7 @@ div.content .alert {
   margin-bottom: 10px;
   font-size: 10pt;
   width: 90%;
-  background-color: #f7d4d7;
+  background-color: #fbe9eb;
 }
 div.content .info {
   moz-border-radius: 5px;

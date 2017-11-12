@@ -29,7 +29,7 @@
 @theme: #AD1F2B;
 @ltgreen: #A5DB8F;
 
-@shade: lighten(@theme, 50%);
+@shade: lighten(@theme, 55%);
 @darker: darken(@theme, 3%);
 @lighter: lighten(@theme, 20%);
 
@@ -91,6 +91,69 @@ div.header {
     padding-bottom: 2.25rem;
     text-align: center;
   }
+  nav {
+    margin-left: 10%;
+    margin-top: 15px;
+    margin-bottom: 0;
+    ul {
+      list-style: none;
+      position: relative;
+      float: left;
+      margin: 0;
+      padding: 0;
+      color: white;
+      li {
+        position: relative;
+        float: left;
+        margin: 0;
+        padding: 0;
+        .active {
+          background: @shade;
+        }
+        /*
+        &:hover {
+          backgroud: @theme;
+          ul {
+            display: block;
+          }
+        }
+        */
+      }
+      li:hover {
+        backgroud: @theme;
+        ul {
+          display:block;
+        }
+      }
+      a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        line-height: 32px;
+        padding: 0 15px;
+      }
+      ul {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        padding: 0;
+        li {
+          float: none;
+          width: 12rem;
+          &:hover {
+            background: @shade;
+          }
+        }
+        a {
+          color: black;
+          line-height: 120%;
+          padding: 10px 15px;
+        }
+      }
+    }
+  }
   .logout {
     text-align:right;
     padding-right: 1em;
@@ -145,11 +208,17 @@ div.content {
         &:first-child { border-top-left-radius: @radius }
         &:last-child { border-top-right-radius: @radius }
       }
-      &:nth-child(even) { background-color: @shade; }
+      /* &:nth-child(even) { background-color: @shade; } */
       &:last-child {
         td:first-child { border-bottom-left-radius: @radius }
         td:last-child { border-bottom-right-radius: @radius }
       }
+    }
+  }
+
+  table.grid {
+    tr {
+      &:nth-child(even) { background-color: @shade; }
     }
   }
 

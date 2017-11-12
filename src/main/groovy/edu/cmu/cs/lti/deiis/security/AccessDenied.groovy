@@ -18,9 +18,10 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class AccessDenied implements AccessDeniedHandler {
     static Logger logger = LoggerFactory.getLogger(AccessDenied)
+
     @Override
     void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-        Authentication auth = SecurityContextHolder.context
+        Authentication auth = SecurityContextHolder.context.authentication
         if (auth) {
             logger.info("User {} attempted to access the protected URL {}", auth.name, request.requestURI)
         }
