@@ -1,4 +1,4 @@
-layout 'layouts/main.groovy',
+layout 'layouts/main.gsp',
     title: 'Upload status',
     content: {
         h1 heading ?: 'Upload Status'

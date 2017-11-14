@@ -1,5 +1,6 @@
 package edu.cmu.cs.lti.deiis.security
 
+import groovy.util.logging.Slf4j
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,10 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 /**
  *
  */
+@Slf4j('logger')
 @Configuration
 class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    static Logger logger = LoggerFactory.getLogger(SecurityConfiguration)
 
     @Autowired
     AccessDenied accessDeniedHandler
@@ -22,12 +22,18 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     void configure(HttpSecurity http) {
         logger.info("Configuring security.")
+        String[] protectedUrls = [
+                '/', '/gold/**', '/baseline/**', '/goto/**',
+                '/select', '/save', '/upload', '/update',
+                '/status', '/list', '/evaluated', '/remaining'
+        ]
         http.csrf().disable()
             .authorizeRequests()
                 .antMatchers("/about", "/question", '/css/**', '/js/**', '/images/**', '/show', '/list', '/raw').permitAll()
-                .antMatchers("/", "/gold/**", "/baseline/**", "/update", "/save").hasRole('USER')
+                .antMatchers(protectedUrls).hasRole('USER')
+//                .antMatchers("/", "/gold/**", "/baseline/**", "/update", "/save", "/remaining", "/evaluated").hasRole('USER')
 //                .antMatchers("/", "/gold/**", "/baseline/**", "/update").permitAll()
-                .antMatchers("/admin").hasRole('ADMIN')
+                .antMatchers("/admin/**").hasRole('ADMIN')
                 .and()
             .formLogin()
                 .loginPage("/login")
@@ -38,7 +44,6 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
             .exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
-
     }
 
     @Autowired
@@ -55,7 +60,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .password('p')
                 .roles('ADMIN', "USER")
         ['yuyanz1', 'shengjil', 'yutong1', 'zkaden', 'ngekakis', 'kec1'].each {
-            logger.info("Adding user {}", it)
+            logger.debug("Adding user {}", it)
             auth.withUser(it).password('cmu11791').roles('USER')
         }
     }

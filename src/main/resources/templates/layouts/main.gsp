@@ -14,24 +14,33 @@ html {
                     li {
                         a(href:'#', 'Reference')
                         ul {
-                            li { a(href:'#', 'Baseline') }
-                            li { a(href:'#', 'Gold') }
+                            li { a(href:'/goto/baseline', 'Baseline') }
+                            li { a(href:'/goto/gold', 'Gold') }
                         }
                     }
                     li {
                         a(href:'#', 'Type')
                         ul {
-                            li { a(href:'#', 'Summary')}
-                            li { a(href:'#', 'Factoid')}
-                            li { a(href:'#', 'List')}
-                            li { a(href:'#', 'Yes / No')}
+                            li { a(href:'/goto/summary', 'Summary')}
+                            li { a(href:'/goto/factoid', 'Factoid')}
+                            li { a(href:'/goto/list', 'List')}
+                            li { a(href:'/goto/yesno', 'Yes / No')}
                         }
                     }
                     li {
                         a(href:'#', 'View')
                         ul {
-                            li { a(href:'/list', 'List' ) }
-                            li { a href:'/raw', 'Raw output'}
+                            li { a(href:'/list', 'Show all' ) }
+                            li { a href:'/raw', 'Raw (CSV) output'}
+                            li { a href:'/evaluated', 'Evaluated' }
+                            li { a href:'/remaining', 'Remaining' }
+                        }
+                    }
+                    li {
+                        a(href:'#', 'Admin')
+                        ul {
+                            li { a href:'/admin/repository', 'Datasets' }
+                            li { a href:'/admin/session', 'Session Info' }
                         }
                     }
                     li {
@@ -46,13 +55,8 @@ html {
         }
 
         div(class:'content') {
-            if (content != null) {
-                content()
-            }
-            else {
-                h1 'Error'
-                p 'Why is Spring Boot calling this with no content!'
-            }
+            content()
+
             div(class:'copyright') {
                 p 'Copyright 2017 Carnegie Mellon University'
             }

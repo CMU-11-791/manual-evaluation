@@ -5,16 +5,15 @@ import edu.cmu.cs.lti.deiis.db.Record
 import edu.cmu.cs.lti.deiis.evaluation.manual.Version
 import edu.cmu.cs.lti.deiis.json.Data
 import edu.cmu.cs.lti.deiis.json.Question
+import edu.cmu.cs.lti.deiis.services.RepositoryService
+import edu.cmu.cs.lti.deiis.services.UserService
+import edu.cmu.cs.lti.deiis.util.Session
 import groovy.util.logging.Slf4j
 import org.lappsgrid.serialization.Serializer
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -39,11 +38,24 @@ class Main {
     }
 
     @Autowired
+    Session session
+
+    @Autowired
     Database database
 
+    @Autowired
+    RepositoryService repository
+
+    @Autowired
+    UserService user
+
+    Data gold
+    Data baseline
+
     Data reference
-    Data candidate
-    String version
+
+//    Data candidate
+//    String dataset
 
     public Main() {
         URL url = this.class.getResource("/data/training5b.json")
@@ -51,18 +63,73 @@ class Main {
             logger.error("Unable to find the data file.")
         }
         else {
-            reference = Serializer.parse(url.text, Data)
+            gold = Serializer.parse(url.text, Data)
+            baseline = gold
+            reference = gold
         }
     }
 
     @GetMapping(value="/", produces = "text/html")
     String root(Model model) {
+        model.addAttribute('filelist', repository.list())
         return "main"
     }
 
+    /*
+     * Called from the admin/repostory page to select a new dataset.
+     */
+    @GetMapping('/select')
+    String select(@RequestParam String id, Model model) {
+        logger.info('GET /select, id = {}', id)
+        session.dataset = id
+
+        //TODO Ideally the index will be set to the next question that needs evaluating.
+        session.index = 0
+
+        String ref = session.reference ?: 'gold'
+        String type = session.type ?: 'summary'
+        logger.debug('Reference {}', ref)
+        logger.debug('Type {}', type)
+        logger.debug('Data {}', id)
+        return "redirect:/$ref/$type"
+    }
+
+    /*
+     * Called from the main page (main.tpl) to initialize an evaluation session.
+     */
+    @PostMapping('/select')
+    String selectPost(@RequestBody String body, Model model) {
+        logger.info('POST /select')
+        Map params = parse(body)
+        String ref = params.ref
+        String type = params.type
+        session.dataset = params.file
+        session.index = 0
+        return "redirect:/$ref/$type"
+    }
+
+    @GetMapping('/goto/{name}')
+    String goTo(@PathVariable String name, Model model) {
+        String reference = session.reference
+        String type = session.type
+        switch (name) {
+            case ['gold','baseline']:
+                reference = name
+                 break
+            case ['summary','factoid','list','yesno']:
+                type = name
+            default:
+                model.addAttribute('error', "Invalid target: $name")
+                break
+        }
+        return "redirect:/$reference/$type"
+    }
+
     @GetMapping(value="/gold/{type}", produces = "text/html")
-    String gold(@PathVariable('type') String type, Model model) {
+    String gold(@PathVariable('type') String type, @RequestParam(value = 'id', required = false) String id, Model model) {
         logger.info("/gold/{}", type)
+
+        reference = gold
         List options = [
                 [value: 1, label:'1 - Bad'],
                 [value: 2, label:'2'],
@@ -70,46 +137,47 @@ class Main {
                 [value: 4, label:'4'],
                 [value: 5, label:'5 - Good']
         ]
-        updateModel(model, type, RefType.gold, options)
+        updateModel(model, RefType.gold, type, id, options)
         return "rate"
     }
 
     @GetMapping(value="/baseline/{type}", produces = "text/html")
-    String baseline(@PathVariable('type') String type, Model model) {
+    String baseline(@PathVariable('type') String type, @RequestParam(value='id', required = false) String id, Model model) {
         logger.info("/baseline/{}", type)
+        reference = baseline
         List options = [
                 [ value:-1, label: 'The reference answer is better'],
                 [ value:0, selected:true, label: 'They are the same'],
                 [ value:1, label: 'The candidate answer is better']
         ]
-        updateModel(model, type, RefType.baseline, options)
+        updateModel(model, RefType.baseline, type, id, options)
         return "rate"
     }
 
     @PostMapping(value="/save")
     String save(@RequestBody String body, Model model) {
-        logger.info("Data was posted.")
-        Authentication auth = SecurityContextHolder.context.authentication
-        User user = auth.principal
-        logger.debug("User: {}", user.username)
-        model.addAttribute('user', user.username)
+        logger.info("/save")
+        String username = user.getName()
+        model.addAttribute('user', username)
         Map data
         try {
             data = parse(body)
             data.each { k,v ->
                 logger.debug("{} = {}", k, v)
-//                model.addAttribute(k, v)
             }
-            data.evaluator = user.username
-            data.version = version
+            data.evaluator = username
+            data.dataset = session.dataset
             database.save(new Record(data))
+            logger.info("{} evaluated {}", username, data.question)
         }
         catch (Exception e) {
             logger.error("Unable to process the request body.")
         }
-        model.addAttribute('data', data)
-        model.addAttribute('link', "/${data.reference}/${data.type}")
-        return "saved"
+        session.index = session.index + 1
+        logger.debug("Session index is now {}", session.index)
+        String reference = session.reference
+        String type = session.type
+        return "redirect:/$reference/$type"
     }
 
     @PostMapping("/upload")
@@ -126,18 +194,21 @@ class Main {
         try {
             logger.debug("Parsing JSON")
             String json = new String(file.getBytes())
-            candidate = Serializer.parse(json, Data)
+            if (repository.save(file.originalFilename, json)) {
+                model.addAttribute('message', 'Uploaded ' + file.getOriginalFilename())
+            }
+            else {
+                model.addAttribute('error', 'Unable to save the file to the repository.')
+            }
             logger.trace("JSON has been parsed.")
-            model.addAttribute('message', 'Uploaded ' + file.getOriginalFilename())
             model.addAttribute('href', "/${ref}/${type}")
             model.addAttribute('label', 'Continue')
-            version = file.getOriginalFilename()
-            logger.info("File received. Sending to the status page.")
+            session.dataset = file.getOriginalFilename()
+            logger.info("{} uploaded dataset {}", user.name, file.originalFilename)
             if (ref == 'baseline') {
                 return baseline(type, model)
             }
             return gold(type, model)
-//            return 'status'
         }
         catch (Exception e) {
             logger.error("Unable to upload file", e)
@@ -145,7 +216,7 @@ class Main {
                 logger.error(e.message)
                 e = e.cause
             }
-            model.addAttribute('message', e.message)
+            model.addAttribute('error', e.message)
         }
         return 'status'
     }
@@ -157,39 +228,62 @@ class Main {
 
     @GetMapping("/list")
     String list(Model model) {
-        List<Map> data = []
+        logger.info('/list')
+        String ref = session.reference
+        String type = session.type
+        String back = "/$ref/$type"
+        List<Record> data
         try
         {
             data = database.findAll()
             String message = "There are ${data.size()} records in the database."
             logger.info(message)
-//            model.addAttribute('message', message)
         }
         catch (Throwable e) {
             logger.error("Unable to query the database.", e)
             model.addAttribute('message', e.message)
             model.addAttribute('heading', 'Error')
-            model.addAttribute('href', '/baseline/summary')
+            model.addAttribute('href', back)
             model.addAttribute('label', 'Back')
             return 'status'
         }
-//        model.addAttribute('data', data)
-        Map record = [
-                id: '1',
-                evaluator:'suderman',
-                question:'1',
-                reference:'gold',
-                type:'summary',
-                version:'submission',
-                readability:'5',
-                repetition:'5'
-        ]
         model.addAttribute('data', data)
-        return "test"
+        model.addAttribute('link', back)
+        return "list"
     }
+
+    @GetMapping('/evaluated')
+    String evaluated(Model model) {
+        String ref = session.reference
+        String type = session.type
+        List<Record> records = database.findByEvaluatorAndReferenceAndType(user.name, ref, type)
+        model.addAttribute('link', "/$ref/$type")
+        model.addAttribute('data', records)
+        return "list"
+    }
+
+    @GetMapping('/remaining')
+    String remaining(Model model) {
+        String ref = session.reference
+        String type = session.type
+        List<String> unmarked = []
+        List<Record> records = database.findByEvaluatorAndReferenceAndType(user.name, ref, type)
+        Data data = repository.load(session.dataset)
+        session.questions.each { id ->
+            Record record = records.find { it.question == id }
+            if (record == null) {
+                unmarked << data.findById(id)
+            }
+        }
+        model.addAttribute('data', unmarked)
+        model.addAttribute('link', "/$ref/$type")
+        return 'remaining'
+    }
+
 
     @GetMapping(value = "/raw", produces = 'text/plain')
     @ResponseBody String raw() {
+        logger.info('/raw')
         List<Record> data = database.findAll()
         logger.info("There are {} records in the database.", data.size())
         StringBuilder buffer = new StringBuilder()
@@ -206,7 +300,7 @@ class Main {
                  Model model) {
         if (error != null) model.addAttribute('invalid', 'error')
         if (logout != null) model.addAttribute('logout', 'logout')
-
+        session.index = 0
         return "login"
     }
 
@@ -228,11 +322,12 @@ class Main {
             response.candidateIdeal = undefined
             return response
         }
+        Data candidates = repository.load(session.dataset)
         Question ref = reference.findById(id)
-        Question cand = candidate.findById(id)
+        Question cand = candidates.findById(id)
+        session.updateIndex(id)
         response.candidate = 'This is the candidate answer.  Hopefully this was retreived from the BioASQ service directly.'
         if (ref) {
-            logger.trace("Found the question.")
             response.exact = toHtml(ref.exact)
             response.ideal = toHtml(ref.ideal)
             response.candidateExact = toHtml(cand.ideal)
@@ -273,19 +368,60 @@ class Main {
         return string
     }
 
-    void updateModel(Model model, String type, RefType ref, List options) {
-        List candidates = candidate.findByType(type)
-        List questions = []
-        candidates.each { Question q ->
-            questions << reference.findById(q.id)
+    void updateSession(RefType reference, String type) {
+        if (session.reference == reference.toString() && session.type == type) {
+            logger.debug("Maintaining session state")
+            return
         }
-        logger.info("There are {} questions", questions.size())
+        logger.debug("Updating the session to {}/{}", reference.toString(), type)
+        session.reference = reference.toString()
+        session.type = type
+        session.index = 0
+        session.questions = []
+        Data candidates = repository.load(session.dataset)
+        List<Question> questions = candidates.findByType(type)
+        questions.each { q ->
+            session.questions << q.id
+        }
+    }
+
+    void updateModel(Model model, RefType ref, String type, String id, List options) {
+        logger.debug("Updating model")
+        updateSession(ref, type)
+        List<Question> candidates = []
+        List<Question> questions = []
+        Data data = repository.load(session.dataset)
+        session.questions.each { qid ->
+            candidates.add(data.findById(qid))
+            questions.add(reference.findById(qid))
+        }
+        int index = 0
+        if (id != null) {
+            index = questions.findIndexOf { it.id == id }
+            session.index = index
+        }
+        else {
+            if (session.index < session.questions.size()) {
+                index = session.index
+            }
+            else {
+                session.index = 0
+            }
+        }
+        String selected = session.questions[index]
+
+        logger.debug("There are {} questions", questions.size())
+        logger.debug("Session index: {}", session.index)
+        logger.debug("Actual index: {}", index)
+        logger.debug("Selected ID: {}", selected)
         model.addAttribute('questions', questions)
         model.addAttribute('candidates', candidates)
         model.addAttribute('heading', ref.label)
         model.addAttribute('options', options)
         model.addAttribute('type', type)
         model.addAttribute('reference', ref.toString())
+        model.addAttribute('selected', selected)
+        model.addAttribute('index', session.index)
     }
 
     Map parse(String input) {

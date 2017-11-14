@@ -1,13 +1,19 @@
-layout 'layouts/main.groovy',
+layout 'layouts/main.gsp',
     title: 'Evaluation',
     content: {
         form(action:'/save', method:'post') {
             div {
                 h1 heading
+
                 label for:'question', 'Select a question'
                 select(id:'question', name:'question', onchange:'update_answers(event)') {
                     questions.each { q ->
-                        option value:q.id, q.body
+                        if (selected == q.id) {
+                            option value:q.id, selected:'selected', q.body
+                        }
+                        else {
+                            option value:q.id, q.body
+                        }
                     }
                 }
             }
@@ -24,8 +30,8 @@ layout 'layouts/main.groovy',
                 div(id:'candidate-exact', '')
                 h4 'Ideal'
                 div(id:'candidate-ideal', '')
-
             }
+
             div(class:'clear', '')
             div {
                 h2 'Rate this answer'
@@ -64,8 +70,10 @@ layout 'layouts/main.groovy',
                 }
                 input(type:'hidden', name:'type', value:type, '')
                 input(type:'hidden', name:'reference', value:reference, '')
-                button(type:'submit', class:'button', 'Save')
-                a(class:'button', href:'/', 'Restart')
+                div(class:'center') {
+                    button(type:'submit', class:'button', 'Save')
+                    a(class:'button', href:'/', 'Restart')
+                }
 
             }
         }

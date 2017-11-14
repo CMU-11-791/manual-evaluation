@@ -1,4 +1,4 @@
-layout 'layouts/login.groovy',
+layout 'layouts/login.gsp',
     title: 'CMU 11-791',
     content: {
         div(class:'content') {

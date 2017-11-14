@@ -25,6 +25,6 @@ class AccessDenied implements AccessDeniedHandler {
         if (auth) {
             logger.info("User {} attempted to access the protected URL {}", auth.name, request.requestURI)
         }
-        response.sendRedirect(request.contextPath, '/403')
+        response.sendRedirect('/403')
     }
 }

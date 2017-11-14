@@ -1,4 +1,4 @@
-layout 'layouts/main.groovy',
+layout 'layouts/main.gsp',
     title: 'Testing',
     content: {
         h1 'Normal'

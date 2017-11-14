@@ -1,4 +1,4 @@
-layout 'layouts/main.groovy',
+layout 'layouts/main.gsp',
     title: "Evaluation",
     content: {
         h1 'Evaluation'
@@ -6,27 +6,34 @@ layout 'layouts/main.groovy',
             tr {
                 th 'ID'
                 th 'Evaluator'
+                th 'Dataset'
                 th 'Question'
                 th 'Reference'
                 th 'Type'
                 th 'Readability'
                 th 'Repetition'
             }
-            data.each { d ->
+            data.each { row ->
                 tr {
-                    td d.id
-                    td d.evaluator
-                    td d.question
-                    td d.reference
-                    td d.type
-                    td d.readability
-                    td d.repetition
+                    td row.id
+                    td row.evaluator
+                    td row.dataset
+                    td row.question
+                    td row.reference
+                    td row.type
+                    td row.readability
+                    td row.repetition
                 }
             }
         }
         div(class:'clear', '')
-        if (link != null) {
-            a(class:'button', href:link, 'Back')
+        div(class:'center') {
+            if (link != null) {
+                a(class:'button', href:link, 'Back')
+            }
+            else {
+                a(class:'button', href:'/', 'Home')
+            }
         }
     }
 

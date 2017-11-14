@@ -1,6 +1,7 @@
 package edu.cmu.cs.lti.deiis.json
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import jp.go.nict.langrid.repackaged.net.arnx.jsonic.JSON
 
 /**
  *
@@ -22,6 +23,36 @@ class Data {
     Question findById(String id) {
         return index[id]
     }
+
+//    @JsonIgnore
+//    String getNext(String id) {
+//        Question q = findById(id)
+//        if (q == null) {
+//            return null
+//        }
+//        return getNext(q)
+//    }
+//
+//    @JsonIgnore
+//    String getNext(Question question) {
+//        for (int i = 0; i < questions.size(); ++i) {
+//            if (question.id == questions[i].id) {
+//                if (i >= questions.size()) {
+//                    return null
+//                }
+//                return questions[i+1].id
+//            }
+//        }
+//        return null
+//    }
+//
+//    @JsonIgnore
+//    String getSecond() {
+//        if (questions.size() > 1) {
+//            return questions[1].id
+//        }
+//        return null
+//    }
 
     /*
      * The set method will be called by Jackson after the question list

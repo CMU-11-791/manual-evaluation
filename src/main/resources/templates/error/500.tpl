@@ -1,4 +1,4 @@
-layout 'layouts/main.groovy',
+layout 'layouts/main.gsp',
     title: 'CMU 11-791',
     content: {
         div(class:'content') {
@@ -8,7 +8,11 @@ layout 'layouts/main.groovy',
         }
         div(class:'clear', '')
         div(class:'center') {
-            a(class:'button', href:'/', 'Home')
-            a(class:'button', href:'/login', 'Login')
+            if (link != null) {
+                a(class:'button', href:link, 'Back')
+            }
+            else {
+                a(class:'button', href:'/', 'Home')
+            }
         }
     }

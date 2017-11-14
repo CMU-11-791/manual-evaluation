@@ -19,7 +19,7 @@ class Record {
     String question
     String reference
     String type
-    String version
+    String dataset
     int readability
     int repetition
     long timestamp
@@ -34,13 +34,13 @@ class Record {
         this.question = data.question
         this.reference = data.reference
         this.type = data.type
-        this.version = data.version
+        this.dataset = data.dataset
         this.readability = data.readability as int
         this.repetition = data.repetition as int
     }
 
     @Override
     String toString() {
-        return String.format("%s,%s,%s,%s,%s,%d,%d,%d", evaluator, question, reference, type, version, repetition, readability, timestamp)
+        return String.format("%s,%s,%s,%s,%s,%d,%d,%d", evaluator, question, reference, type, dataset, repetition, readability, timestamp)
     }
 }
