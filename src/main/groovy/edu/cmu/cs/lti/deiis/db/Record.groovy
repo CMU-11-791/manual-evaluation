@@ -22,6 +22,8 @@ class Record {
     String dataset
     int readability
     int repetition
+    int precision
+    int recall
     long timestamp
 
     Record() {
@@ -37,10 +39,12 @@ class Record {
         this.dataset = data.dataset
         this.readability = data.readability as int
         this.repetition = data.repetition as int
+        this.precision = data.precision as int
+        this.recall = data.recall as int
     }
 
     @Override
     String toString() {
-        return String.format("%s,%s,%s,%s,%s,%d,%d,%d", evaluator, question, reference, type, dataset, repetition, readability, timestamp)
+        return String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%d", evaluator, question, reference, type, dataset, repetition, readability, precision, recall, timestamp)
     }
 }

@@ -12,6 +12,8 @@ layout 'layouts/main.gsp',
                 th 'Type'
                 th 'Readability'
                 th 'Repetition'
+                th 'Precision'
+                th 'Recall'
             }
             data.each { row ->
                 tr {
@@ -23,6 +25,8 @@ layout 'layouts/main.gsp',
                     td row.type
                     td row.readability
                     td row.repetition
+                    td row.precision
+                    td row.recall
                 }
             }
         }

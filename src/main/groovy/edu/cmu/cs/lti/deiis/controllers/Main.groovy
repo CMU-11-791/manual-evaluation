@@ -54,19 +54,23 @@ class Main {
 
     Data reference
 
-//    Data candidate
-//    String dataset
-
     public Main() {
-        URL url = this.class.getResource("/data/training5b.json")
+        //TODO the gold and baseline files should be specified in an external config.
+        gold = loadData('training5b.json')
+        baseline = loadData('baseline.json')
+        reference = baseline
+    }
+
+    Data loadData(String name) {
+        Data data = null
+        URL url = this.class.getResource("/data/$name")
         if (url == null) {
-            logger.error("Unable to find the data file.")
+            logger.error("Unable to find the data file {}", name)
         }
         else {
-            gold = Serializer.parse(url.text, Data)
-            baseline = gold
-            reference = gold
+            data = Serializer.parse(url.text, Data)
         }
+        return data
     }
 
     @GetMapping(value="/", produces = "text/html")
@@ -118,6 +122,7 @@ class Main {
                  break
             case ['summary','factoid','list','yesno']:
                 type = name
+                break
             default:
                 model.addAttribute('error', "Invalid target: $name")
                 break

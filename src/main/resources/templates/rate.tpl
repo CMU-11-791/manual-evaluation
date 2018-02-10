@@ -66,7 +66,36 @@ layout 'layouts/main.gsp',
                             }
                         }
                     }
-
+                    tr {
+                        td 'Precision'
+                        td {
+                            select(id:'precision', name:'precision') {
+                                options.each { opt ->
+                                    if (opt.selected) {
+                                        option value:opt.value, selected:'selected', opt.label
+                                    }
+                                    else {
+                                        option value:opt.value, opt.label
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    tr {
+                        td 'Recall'
+                        td {
+                            select(id:'recall', name:'recall') {
+                                options.each { opt ->
+                                    if (opt.selected) {
+                                        option value:opt.value, selected:'selected', opt.label
+                                    }
+                                    else {
+                                        option value:opt.value, opt.label
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 input(type:'hidden', name:'type', value:type, '')
                 input(type:'hidden', name:'reference', value:reference, '')

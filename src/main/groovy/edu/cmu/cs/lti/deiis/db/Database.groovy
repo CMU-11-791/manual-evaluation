@@ -20,6 +20,7 @@ interface Database extends Repository<Record,Long> {
     List<Record> findByReferenceAndType(String reference, String type)
 
     void save(Record record)
+
     void delete(Record record)
     void deleteAll()
     void deleteById(Long id)
