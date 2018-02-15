@@ -22,18 +22,25 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     void configure(HttpSecurity http) {
         logger.info("Configuring security.")
+
+        // Anyone may access these
+        String[] publicUrls = [ "/about", "/question", '/css/**', '/js/**', '/images/**', '/show', '/list', '/raw' ]
+
+        // Users must be logged in.
         String[] protectedUrls = [
                 '/', '/gold/**', '/baseline/**', '/goto/**',
                 '/select', '/save', '/upload', '/update',
                 '/status', '/list', '/evaluated', '/remaining'
         ]
+
+        // Administrators only.
+        String[] privateUrls = [ "/admin/**" ]
+
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/about", "/question", '/css/**', '/js/**', '/images/**', '/show', '/list', '/raw').permitAll()
+                .antMatchers(publicUrls).permitAll()
                 .antMatchers(protectedUrls).hasRole('USER')
-//                .antMatchers("/", "/gold/**", "/baseline/**", "/update", "/save", "/remaining", "/evaluated").hasRole('USER')
-//                .antMatchers("/", "/gold/**", "/baseline/**", "/update").permitAll()
-                .antMatchers("/admin/**").hasRole('ADMIN')
+                .antMatchers(privateUrls).hasRole('ADMIN')
                 .and()
             .formLogin()
                 .loginPage("/login")

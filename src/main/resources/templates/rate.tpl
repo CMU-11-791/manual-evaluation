@@ -17,19 +17,37 @@ layout 'layouts/main.gsp',
                     }
                 }
             }
-            div(class:'column') {
-                h3 'Reference Answer'
-                h4 'Exact'
-                div(id:'exact-answer') { p { questions[0].exact ?: 'None provided.' } }
-                h4 'Ideal'
-                div(id:'ideal-answer') { p { questions[0].ideal ?: 'None provided.' } }
+            if ((int)(Math.random() * 2)) {
+                div(class:'column') {
+                    h3 'Reference Answer'
+                    h4 'Exact'
+                    div(id:'exact-answer') { p { questions[0].exact ?: 'None provided.' } }
+                    h4 'Ideal'
+                    div(id:'ideal-answer') { p { questions[0].ideal ?: 'None provided.' } }
+                }
+                div(class:'column') {
+                    h3 'Candidate Answer'
+                    h4 'Exact'
+                    div(id:'candidate-exact', '')
+                    h4 'Ideal'
+                    div(id:'candidate-ideal', '')
+                }
             }
-            div(class:'column') {
-                h3 'Candidate Answer'
-                h4 'Exact'
-                div(id:'candidate-exact', '')
-                h4 'Ideal'
-                div(id:'candidate-ideal', '')
+            else {
+                div(class:'column') {
+                    h3 'Candidate Answer'
+                    h4 'Exact'
+                    div(id:'candidate-exact', '')
+                    h4 'Ideal'
+                    div(id:'candidate-ideal', '')
+                }
+                div(class:'column') {
+                    h3 'Reference Answer'
+                    h4 'Exact'
+                    div(id:'exact-answer') { p { questions[0].exact ?: 'None provided.' } }
+                    h4 'Ideal'
+                    div(id:'ideal-answer') { p { questions[0].ideal ?: 'None provided.' } }
+                }
             }
 
             div(class:'clear', '')

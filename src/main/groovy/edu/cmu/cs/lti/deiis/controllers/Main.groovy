@@ -151,10 +151,16 @@ class Main {
         logger.info("/baseline/{}", type)
         reference = baseline
         List options = [
-                [ value:-1, label: 'The reference answer is better'],
-                [ value:0, selected:true, label: 'They are the same'],
-                [ value:1, label: 'The candidate answer is better']
+                [ value:'b', label: 'Summary A is better'],
+                [ value:'a', label: 'Summary B is better'],
+                [ value:'both', label: 'Both are good'],
+                [ value: 'neither', label: 'Neither is good']
         ]
+//        List options = [
+//                [ value:-1, label: 'The reference answer is better'],
+//                [ value:0, selected:true, label: 'They are the same'],
+//                [ value:1, label: 'The candidate answer is better']
+//        ]
         updateModel(model, RefType.baseline, type, id, options)
         return "rate"
     }
