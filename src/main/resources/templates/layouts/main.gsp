@@ -49,16 +49,13 @@ html {
                 }
             }
             div(class:'clear', '')
-            //div(class:'logout') {
-            //    a(href:'/login?logout', 'Logout')
-            //}
         }
 
         div(class:'content') {
             content()
 
             div(class:'copyright') {
-                p 'Copyright 2017 Carnegie Mellon University'
+                p 'Copyright 2018 Carnegie Mellon University'
             }
         }
     }
