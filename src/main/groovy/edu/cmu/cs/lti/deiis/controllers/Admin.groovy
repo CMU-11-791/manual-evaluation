@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
 
+import java.security.Principal
+
 /**
  *
  */
@@ -43,6 +45,8 @@ class Admin {
 
     @GetMapping('/admin/session')
     String session(Model model) {
+        model.addAttribute('username', user.name)
+        model.addAttribute('roles', user.roles)
         model.addAttribute('reference', session.reference)
         model.addAttribute('type', session.type)
         model.addAttribute('index', session.index)
@@ -67,6 +71,7 @@ class Admin {
 
     @PostMapping(value='/admin/upload')
     String upload(@RequestParam('file') MultipartFile file, Model model) {
+        logger.info("")
         String content = new String(file.bytes)
         String name = file.originalFilename
         String message

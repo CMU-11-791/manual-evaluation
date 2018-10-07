@@ -250,6 +250,63 @@ div.content .slidercontainer #score-display {
   height: 25px;
   padding-left: 10px;
 }
+div.content .custom-radios div {
+  display: inline-block;
+}
+div.content .custom-radios input[type="radio"] {
+  display: none;
+  margin-left: 2em;
+}
+div.content .custom-radios input[type="radio"] + label {
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+div.content .custom-radios input[type="radio"] + label span {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  margin: 10px 4px 0 0;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  line-height: 12px;
+}
+div.content .custom-radios input[type="radio"] + label span img {
+  opacity: 0;
+  transition: all .3s ease;
+}
+div.content .custom-radios input[type="radio"] + label + span {
+  display: inline;
+  margin-left: 2em;
+  vertical-align: middle;
+}
+div.content .custom-radios input[type="radio"]#green + label span {
+  background-color: #2ecc71;
+}
+div.content .custom-radios input[type="radio"]#blue + label span {
+  background-color: #3498db;
+}
+div.content .custom-radios input[type="radio"]#yellow + label span {
+  background-color: #f1c40f;
+}
+div.content .custom-radios input[type="radio"]#red + label span {
+  background-color: #e74c3c;
+}
+div.content .custom-radios input[type="radio"]#grey + label span {
+  background-color: #ccc;
+}
+div.content .custom-radios input[type="radio"]#unselected + label span {
+  background-color: #ccc;
+}
+div.content .custom-radios input[type="radio"]:checked + label span img {
+  opacity: 1;
+}
 div.content .copyright {
   padding-top: 10px;
   padding-bottom: 20px;
@@ -262,6 +319,14 @@ div.content .middle {
 div.content .column {
   float: left;
   width: 50%;
+}
+div.content .column3 {
+  float: left;
+  width: 40%;
+}
+div.content .column-mid {
+  float: left;
+  width: 20%;
 }
 div.content .center {
   padding-top: 10px;

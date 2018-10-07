@@ -81,6 +81,10 @@ class RepositoryService {
             logger.warn("The repository is null")
             return null
         }
+        if (name == null) {
+            logger.warn("No dataset name provided.")
+            return null
+        }
         File file = new File(repository, name)
         if (!file.exists()) {
             logger.warn("No suche file {}", name)

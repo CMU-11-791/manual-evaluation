@@ -23,6 +23,6 @@ class UserService {
         Authentication auth = SecurityContextHolder.context.authentication
         User user = auth.principal
 
-        return user.authorities.inject { it.authority }
+        return user.authorities.collect { it.authority }
     }
 }

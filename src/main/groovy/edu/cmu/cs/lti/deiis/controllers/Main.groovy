@@ -53,12 +53,28 @@ class Main {
     Data baseline
 
     Data reference
+    Random rng
+
+    List options = [
+            [ value: 'R', label: 'Reference is better'],
+            [ value: 'C', label: 'Candidate is better'],
+            [ value: '2', label: 'Both are good'],
+            [ value: '0', label: 'Neither is good']
+    ]
+
+    List radios = [
+            [ id: 'unselected', value:-1, label:'Not rated', checked:true ],
+            [ id: 'red', value:0, label: 'Bad' ],
+            [ id: 'yellow', value:1, label: 'Meh' ],
+            [ id: 'green', value:2, label: 'Good' ]
+    ]
 
     public Main() {
         //TODO the gold and baseline files should be specified in an external config.
-        gold = loadData('training5b.json')
-        baseline = loadData('baseline.json')
+        gold = loadData('original.json')
+        baseline = loadData('fusion.json')
         reference = baseline
+        rng = new Random()
     }
 
     Data loadData(String name) {
@@ -135,33 +151,42 @@ class Main {
         logger.info("/gold/{}", type)
 
         reference = gold
-        List options = [
-                [value: 1, label:'1 - Bad'],
-                [value: 2, label:'2'],
-                [value: 3, label:'3', selected: true],
-                [value: 4, label:'4'],
-                [value: 5, label:'5 - Good']
-        ]
-        updateModel(model, RefType.gold, type, id, options)
+        model.addAttribute('radios', radios)
+        updateModel(model, RefType.gold, type, id, options())
         return "rate"
     }
 
+    List options() {
+        List result = []
+        if (rng.nextInt(2) == 0) {
+            result << options[0]
+            result << options[1]
+        }
+        else {
+            result << options[1]
+            result << options[0]
+        }
+        result << [ value:'N', label:'Please rate this answer', selected:true]
+        if (rng.nextInt(2) == 0) {
+            result << options[2]
+            result << options[3]
+        }
+        else {
+            result << options[3]
+            result << options[2]
+        }
+    }
     @GetMapping(value="/baseline/{type}", produces = "text/html")
     String baseline(@PathVariable('type') String type, @RequestParam(value='id', required = false) String id, Model model) {
         logger.info("/baseline/{}", type)
         reference = baseline
-        List options = [
-                [ value:'b', label: 'Summary A is better'],
-                [ value:'a', label: 'Summary B is better'],
-                [ value:'both', label: 'Both are good'],
-                [ value: 'neither', label: 'Neither is good']
-        ]
+        model.addAttribute('radios', radios)
 //        List options = [
 //                [ value:-1, label: 'The reference answer is better'],
 //                [ value:0, selected:true, label: 'They are the same'],
 //                [ value:1, label: 'The candidate answer is better']
 //        ]
-        updateModel(model, RefType.baseline, type, id, options)
+        updateModel(model, RefType.baseline, type, id, options())
         return "rate"
     }
 
@@ -182,7 +207,7 @@ class Main {
             logger.info("{} evaluated {}", username, data.question)
         }
         catch (Exception e) {
-            logger.error("Unable to process the request body.")
+            logger.error("Unable to process the request body.", e)
         }
         session.index = session.index + 1
         logger.debug("Session index is now {}", session.index)
@@ -341,8 +366,8 @@ class Main {
         if (ref) {
             response.exact = toHtml(ref.exact)
             response.ideal = toHtml(ref.ideal)
-            response.candidateExact = toHtml(cand.ideal)
-            response.candidateIdeal = toHtml(cand.exact)
+            response.candidateExact = toHtml(cand.exact)
+            response.candidateIdeal = toHtml(cand.ideal)
         }
         else {
             response.exact = "Unable to fetch question data."
@@ -354,7 +379,7 @@ class Main {
     private String toHtml(Object object) {
         StringBuilder buffer = new StringBuilder()
         if (object == null) {
-            logger.trace("Null object passed to the toHtml() method.")
+            logger.warn("Null object passed to the toHtml() method.")
             return '<p>None specified.</p>'
         }
         else if (object instanceof List) {
@@ -390,9 +415,14 @@ class Main {
         session.index = 0
         session.questions = []
         Data candidates = repository.load(session.dataset)
-        List<Question> questions = candidates.findByType(type)
-        questions.each { q ->
-            session.questions << q.id
+        if (candidates == null) {
+            logger.warn("No candidate questions for the dataset {}", session.dataset)
+        }
+        else {
+            List<Question> questions = candidates.findByType(type)
+            questions.each { q ->
+                session.questions << q.id
+            }
         }
     }
 

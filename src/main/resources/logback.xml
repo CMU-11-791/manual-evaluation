@@ -10,7 +10,8 @@
 			<pattern>%-5level [%class{0}.%M:%line] %msg%n</pattern>
 		</encoder>
 	</appender>
-	
+
+	<!--
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
 		<encoder>
 			<pattern>%-5level [%class{0}.%M:%line] %msg%n</pattern>
@@ -18,18 +19,11 @@
 		<append>true</append>
 		<file>evaluation.log</file>
 	</appender>
-	
-	<logger name="org.springframework" level="warn">
-		<appender-ref ref="STDOUT"/>
-	</logger>
-	
-	<logger name="org.apache" level="warn">
-		<appender-ref ref="STDOUT"/>
-	</logger>
+	-->
 
-	<logger name="edu.cmu.cs.lti.deiis" level="debug">
-		<appender-ref ref="STDOUT"/>
-	</logger>
+	<logger name="org.springframework" level="warn"/>
+	<logger name="org.apache" level="warn"/>
+	<logger name="edu.cmu.cs.lti.deiis" level="debug"/>
 
 	<root level="info">
 		<appender-ref ref="STDOUT"/>

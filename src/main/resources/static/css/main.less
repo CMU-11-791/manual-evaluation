@@ -29,6 +29,12 @@
 @theme: #AD1F2B;
 @ltgreen: #A5DB8F;
 
+@green: #2ecc71;
+@yellow: #f1c40f;
+@red: #e74c3c;
+@blue: #3498db;
+@grey: #ccc;
+
 @shade: lighten(@theme, 55%);
 @darker: darken(@theme, 3%);
 @lighter: lighten(@theme, 20%);
@@ -284,6 +290,78 @@ div.content {
     */
   }
 
+  .custom-radios {
+
+    div {
+      display: inline-block;
+    }
+
+    input[type="radio"] {
+      display: none;
+      margin-left: 2em;
+
+      + label {
+        color: #333;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+
+        span {
+          display: inline-block;
+          width: 25px;
+          height: 25px;
+          margin: 10px 4px 0 0;
+          vertical-align: middle;
+          cursor: pointer;
+          border-radius: 50%;
+          border: 2px solid #FFFFFF;
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+          background-repeat: no-repeat;
+          background-position: center;
+          text-align: center;
+          line-height: 12px;
+
+          img {
+            opacity: 0;
+            transition: all .3s ease;
+          }
+        }
+        + span {
+          display: inline;
+          margin-left: 2em;
+          vertical-align: middle;
+        }
+      }
+
+      &#green + label span {
+        background-color: @green;
+      }
+
+      &#blue + label span {
+        background-color: @blue;
+      }
+
+      &#yellow + label span {
+        background-color: @yellow;
+      }
+
+      &#red + label span {
+        background-color: @red;
+      }
+
+      &#grey + label span {
+        background-color: @grey;
+      }
+
+      &#unselected + label span {
+        background-color: @grey;
+      }
+
+      &:checked + label span img {
+        opacity: 1;
+      }
+    }
+  }
+
   .copyright {
     padding-top: 10px;
     padding-bottom: 20px;
@@ -298,6 +376,16 @@ div.content {
   .column {
     float: left;
     width: 50%;
+  }
+
+  .column3 {
+    float: left;
+    width: 40%;
+  }
+
+  .column-mid {
+    float: left;
+    width: 20%;
   }
 
   .center {

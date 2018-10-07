@@ -25,4 +25,30 @@ class MiscTest {
         println d.getTime()
         println now
     }
+
+    @Ignore
+    void randomTest() {
+        Random r = new Random()
+        10.times {
+            println r.nextInt(2)
+        }
+    }
+    @Ignore
+    void shuffleTest() {
+        List list = [1,2,3,4]
+        10.times {
+            println shuffle(list)
+        }
+    }
+
+    List shuffle(List list) {
+        Random random = new Random()
+        int n = list.size() - 1;
+        while (n > 1) {
+            int i = random.nextInt(n - 1)
+            list.swap(i, n)
+            --n
+        }
+        return list
+    }
 }

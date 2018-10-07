@@ -1,6 +1,7 @@
 layout 'layouts/main.gsp',
     title: 'Evaluation',
     content: {
+        String checkmark = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg'
         form(action:'/save', method:'post') {
             div {
                 h1 heading
@@ -17,19 +18,44 @@ layout 'layouts/main.gsp',
                     }
                 }
             }
-            div(class:'column') {
-                h3 'Reference Answer'
+            div(class:'column3') {
+                h3 id:'left-header', 'Left Side'
                 h4 'Exact'
-                div(id:'exact-answer') { p { questions[0].exact ?: 'None provided.' } }
+                div(id:'left-exact') { p { questions[0]?.exact ?: 'None provided.' } }
                 h4 'Ideal'
-                div(id:'ideal-answer') { p { questions[0].ideal ?: 'None provided.' } }
+                div(id:'left-ideal') { p { questions[0]?.ideal ?: 'None provided.' } }
             }
-            div(class:'column') {
-                h3 'Candidate Answer'
+
+            div(class:'column-mid') {
+                h3 'Rate This Answer'
+                div(class:'custom-radios') {
+                    div {
+                        radios.each { radio ->
+                            String id = radio.id
+                            def params = [id:id, type:'radio', name:'color', value:radio.value]
+                            if (radio.checked) {
+                                params.checked = true
+                            }
+                            input(params) { }
+                            label(for:id) {
+                                //span {
+                                //   img src:checkmark, alt:'Checkmark Icon', ''
+                                //}
+                                span radio.label
+                            }
+
+                            br()
+                        }
+                    }
+                }
+            }
+
+            div(class:'column3') {
+                h3 id: 'right-header', 'Right Side'
                 h4 'Exact'
-                div(id:'candidate-exact', '')
+                div(id:'right-exact', '')
                 h4 'Ideal'
-                div(id:'candidate-ideal', '')
+                div(id:'right-ideal', '')
             }
 
             div(class:'clear', '')
