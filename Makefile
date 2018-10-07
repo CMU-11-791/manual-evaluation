@@ -32,6 +32,7 @@ run:
 	java -jar target/$(JAR)
 
 docker:
+	if [[ ! -e src/main/docker/$(JAR) ]] ; then cp target/$(JAR) src/main/docker ; fi
 	cd src/main/docker && docker build -t $(IMAGE) .
 
 start:
