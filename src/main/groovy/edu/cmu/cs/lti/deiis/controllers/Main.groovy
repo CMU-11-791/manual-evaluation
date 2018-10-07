@@ -64,7 +64,7 @@ class Main {
     ]
 
     List radios = [
-            [ id: 'unrated', value:'unrated', label:'Not rated', checked:true, style:'' ],
+            [ id: 'unrated', value:'unrated', label:'Not rated', style:'' ],
             [ id: 'good', value:'good', label: 'Good', style:'p-success-o' ],
             [ id: 'meh', value:'meh', label: 'Meh', style:'p-warning-o' ],
             [ id: 'bad', value:'bad', label: 'Bad', style:'p-danger-o' ]
@@ -207,7 +207,7 @@ class Main {
             if (records.size() > 0) {
                 long id = records[0].id
                 database.update(id, data.rating)
-                logger.info("Updated {} to {}", id, rating)
+                logger.info("Updated {} to {}", id, data.rating)
             }
             else {
                 data.evaluator = username
@@ -451,10 +451,15 @@ class Main {
             candidates.add(data.findById(qid))
             questions.add(reference.findById(qid))
         }
+        String rating = 'unrated'
         int index = 0
         if (id != null) {
             index = questions.findIndexOf { it.id == id }
             session.index = index
+            Record record = database.findByEvaluatorAndDatasetAndQuestionAndReferenceAndType(user.name, session.dataset, id, ref.name(), type)
+            if (record && record.rating) {
+                rating = record.rating
+            }
         }
         else {
             if (session.index < session.questions.size()) {
@@ -478,6 +483,7 @@ class Main {
         model.addAttribute('reference', ref.toString())
         model.addAttribute('selected', selected)
         model.addAttribute('index', session.index)
+        model.addAttribute('rating', rating)
     }
 
     Map parse(String input) {

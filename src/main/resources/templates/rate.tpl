@@ -35,7 +35,7 @@ layout 'layouts/main.gsp',
                             String id = radio.id
                             String style = radio.style
                             def params = [id:id, type:'radio', name:'rating', value:radio.value]
-                            if (radio.checked) {
+                            if (id == rating) {
                                 params.checked = true
                             }
                             input(params) { }

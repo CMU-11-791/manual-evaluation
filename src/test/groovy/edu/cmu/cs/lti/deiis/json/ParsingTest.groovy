@@ -60,7 +60,7 @@ class ParsingTest {
         }
     }
 
-    @Test
+    @Ignore
     void checkIdValues() {
         Data baseline = load("/data/bioasq4b_gold.json")
 //        Data baseline = load("/data/original.json")
