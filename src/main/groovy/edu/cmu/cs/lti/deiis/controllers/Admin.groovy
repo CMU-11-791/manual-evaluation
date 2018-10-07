@@ -61,6 +61,11 @@ class Admin {
         return 'admin/session'
     }
 
+    @GetMapping('/admin/radios')
+    String radios(Model model) {
+        return 'radios'
+    }
+
     @GetMapping('/admin/delete')
     String delete(@RequestParam('id') String id, Model model) {
         logger.info("Attempting to delete.")

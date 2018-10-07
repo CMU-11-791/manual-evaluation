@@ -26,12 +26,12 @@ class Error implements ErrorController {
         return "error/403"
     }
 
-    @GetMapping("/error")
-    String error(Model model) {
-        logger.warn("Caught an internal error.")
-        model.addAttribute('link', link())
-        return "error/500"
-    }
+//    @GetMapping("/error")
+//    String error(Model model) {
+//        logger.warn("Caught an internal error.")
+//        model.addAttribute('link', link())
+//        return "error/500"
+//    }
 
     @Override
     String getErrorPath() {
