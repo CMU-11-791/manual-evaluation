@@ -20,10 +20,11 @@ class Record {
     String reference
     String type
     String dataset
-    int readability
-    int repetition
-    int precision
-    int recall
+//    int readability
+//    int repetition
+//    int precision
+//    int recall
+    String rating
     long timestamp
 
     Record() {
@@ -37,10 +38,11 @@ class Record {
         this.reference = data.reference
         this.type = data.type
         this.dataset = data.dataset
-        this.readability = data.readability as int
-        this.repetition = data.repetition as int
-        this.precision = data.precision as int
-        this.recall = data.recall as int
+//        this.readability = data.readability as int
+//        this.repetition = data.repetition as int
+//        this.precision = data.precision as int
+//        this.recall = data.recall as int
+        this.rating = data.rating //as int
     }
 
     @Override

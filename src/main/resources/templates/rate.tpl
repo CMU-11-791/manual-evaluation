@@ -1,5 +1,6 @@
 layout 'layouts/main.gsp',
     title: 'Evaluation',
+    stylesheets: ['/css/pretty-checkbox.min.css', '/css/icons.css'],
     content: {
         String checkmark = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg'
         form(action:'/save', method:'post') {
@@ -28,6 +29,29 @@ layout 'layouts/main.gsp',
 
             div(class:'column-mid') {
                 h3 'Rate This Answer'
+                div {
+                    radios.each { radio ->
+                        div(class:"pretty p-icon p-toggle p-plain") {
+                            String id = radio.id
+                            String style = radio.style
+                            def params = [id:id, type:'radio', name:'rating', value:radio.value]
+                            if (radio.checked) {
+                                params.checked = true
+                            }
+                            input(params) { }
+                            div(class:"state $style p-on") {
+                                span class:"icon mdi mdi-checkbox-marked-circle" ,''
+                                label radio.label
+                            }
+                            div(class:"state $style p-off") {
+                                span class:"icon mdi mdi-checkbox-blank-circle" ,''
+                                label radio.label
+                            }
+                        }
+                        br()
+                    }
+                }
+                /*
                 div(class:'custom-radios') {
                     div {
                         radios.each { radio ->
@@ -48,6 +72,7 @@ layout 'layouts/main.gsp',
                         }
                     }
                 }
+                */
             }
 
             div(class:'column3') {
@@ -60,6 +85,7 @@ layout 'layouts/main.gsp',
 
             div(class:'clear', '')
             div {
+                /*
                 h2 'Rate this answer'
                 table {
                     tr {
@@ -123,6 +149,7 @@ layout 'layouts/main.gsp',
                         }
                     }
                 }
+                */
                 input(type:'hidden', name:'type', value:type, '')
                 input(type:'hidden', name:'reference', value:reference, '')
                 div(class:'center') {

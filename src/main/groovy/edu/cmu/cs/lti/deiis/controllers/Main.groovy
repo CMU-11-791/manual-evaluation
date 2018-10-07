@@ -12,6 +12,7 @@ import groovy.util.logging.Slf4j
 import org.lappsgrid.serialization.Serializer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -63,10 +64,10 @@ class Main {
     ]
 
     List radios = [
-            [ id: 'unselected', value:-1, label:'Not rated', checked:true ],
-            [ id: 'red', value:0, label: 'Bad' ],
-            [ id: 'yellow', value:1, label: 'Meh' ],
-            [ id: 'green', value:2, label: 'Good' ]
+            [ id: 'unrated', value:'unrated', label:'Not rated', checked:true, style:'' ],
+            [ id: 'good', value:'good', label: 'Good', style:'p-success-o' ],
+            [ id: 'meh', value:'meh', label: 'Meh', style:'p-warning-o' ],
+            [ id: 'bad', value:'bad', label: 'Bad', style:'p-danger-o' ]
     ]
 
     public Main() {
@@ -190,6 +191,7 @@ class Main {
         return "rate"
     }
 
+    @Transactional
     @PostMapping(value="/save")
     String save(@RequestBody String body, Model model) {
         logger.info("/save")
@@ -201,10 +203,19 @@ class Main {
             data.each { k,v ->
                 logger.debug("{} = {}", k, v)
             }
-            data.evaluator = username
-            data.dataset = session.dataset
-            database.save(new Record(data))
-            logger.info("{} evaluated {}", username, data.question)
+            List<Record> records = database.findByEvaluatorAndDatasetAndQuestionAndReferenceAndType(username, session.dataset, data.question, data.reference, data.type)
+            if (records.size() > 0) {
+                long id = records[0].id
+                database.update(id, data.rating)
+                logger.info("Updated {} to {}", id, rating)
+            }
+            else {
+                data.evaluator = username
+                data.dataset = session.dataset
+
+                database.save(new Record(data))
+                logger.info("{} evaluated {}", username, data.question)
+            }
         }
         catch (Exception e) {
             logger.error("Unable to process the request body.", e)
@@ -361,6 +372,7 @@ class Main {
         Data candidates = repository.load(session.dataset)
         Question ref = reference.findById(id)
         Question cand = candidates.findById(id)
+        List<Record> records = database.findByEvaluatorAndDatasetAndQuestionAndReferenceAndType(user.name, session.dataset, id, session.reference, session.type)
         session.updateIndex(id)
         response.candidate = 'This is the candidate answer.  Hopefully this was retreived from the BioASQ service directly.'
         if (ref) {
@@ -368,6 +380,9 @@ class Main {
             response.ideal = toHtml(ref.ideal)
             response.candidateExact = toHtml(cand.exact)
             response.candidateIdeal = toHtml(cand.ideal)
+            if (records.size() > 0) {
+                response.rating = records[0].rating
+            }
         }
         else {
             response.exact = "Unable to fetch question data."

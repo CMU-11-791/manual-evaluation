@@ -1,8 +1,8 @@
 <html>
 <head><title>Evaluation</title>
-    <link rel='stylesheet' type='text/css' href='/css/main.css'/>
-    <script src='/js/jquery.min.js'></script>
-    <script src='/js/main.js'></script>
+    <link rel='stylesheet' type='text/css' href='css/main.css'/>
+    <script src='js/jquery.min.js'></script>
+    <script src='js/main.js'></script>
 </head>
 <body>
 <div class='header'><h1>CMU 11-791</h1>
@@ -46,62 +46,8 @@
     <form action='/save' method='post'>
         <div><h1>Baseline Comparison</h1><label for='question'>Select a question</label><select id='question'
                                                                                                 name='question'
-                                                                                                onchange='update_answers(event)'>
-            <option value='56bf3a79ef6e39474100000f'>What is the association of estrogen replacement therapy and
-                intracranial meningioma risk?
-            </option>
-            <option value='56af7b820a360a5e45000014'>What is ChiRP-seq (Chromatin Isolation by RNA Purification
-                sequencing)?
-            </option>
-            <option value='56bf4035ef6e394741000010' selected='selected'>What is 2d 4d ratio in athletes.</option>
-            <option value='56cdf4675795f9a73e00003f'>Which kinase is regulating stress granule biogenesis?</option>
-            <option value='56b2863945561f0573000001'>What is enCHIP?</option>
-            <option value='56c036afef6e394741000019'>What causes erucism?</option>
-            <option value='56cdf4fe5795f9a73e000044'>Where does TORC1 sequester during heat stress?</option>
-            <option value='570906fecf1c325851000010'>What is the effect that EZH2 has on chromatin?</option>
-            <option value='56b3efc38525abca1e000006'>What is Genomicus?</option>
-            <option value='56b8ccc5156496395c000003'>What is STARR-seq?</option>
-            <option value='56b9cabbac7ad10019000002'>What is the role of Caenorhabditis elegans Heterochromatin protein
-                1 (HPL-2) in development?
-            </option>
-            <option value='5709f646cf1c325851000021'>How can DUF families be deciphered?</option>
-            <option value='56c097deef6e394741000027'>What is the role of photodynamic therapy for meningioma
-                treatment?
-            </option>
-            <option value='56bdc452a36a056b3d000001'>Describe the usefulness of the SPIKE database in human signaling
-                pathways
-            </option>
-            <option value='56c1d848ef6e39474100002f'>What is Tarlov Cyst?</option>
-            <option value='570a7594cf1c325851000026'>What is membrane scission?</option>
-            <option value='56c1d84aef6e394741000030'>What is evaluated with the Hydrocephalus Outcome Questionnaire?
-            </option>
-            <option value='57092635cf1c325851000019'>How does long-range epigenetic silencing (LRES) occur?</option>
-            <option value='570a8dcfcf1c325851000027'>What are the functions of the ESCRT machinery?</option>
-            <option value='57092f9bcf1c32585100001b'>How does Foxa transcription factor exhibits its pioneering
-                function?
-            </option>
-            <option value='56c06ef5ef6e39474100001e'>What is the application of the ASSET algorithm in C.elegans?
-            </option>
-            <option value='56c0ea0aef6e394741000029'>Give an overview of visualizing genomes with oligopaint FISH
-                probes.
-            </option>
-            <option value='56c1d85fef6e394741000036'>What is known about maternal smoking and brain tumor risk?</option>
-            <option value='56c234a4ef6e394741000059'>What is FINDbase?</option>
-            <option value='56c23652ef6e39474100005a'>What is HbVar?</option>
-            <option value='56c322d750c68dd416000004'>What is the vibrational theory of olfaction?</option>
-            <option value='56c1f00fef6e394741000040'>Describe July Effect.</option>
-            <option value='56c1f011ef6e394741000042'>What is the mechanism of action of ocrelizumab for treatment of
-                multiple sclerosis?
-            </option>
-            <option value='56c8f7445795f9a73e00001b'>What is DNAshape?</option>
-            <option value='56c904745795f9a73e00001c'>Describe the usefulness of Macrostomum lignano in ion channel and
-                stem cell research
-            </option>
-            <option value='56c1f027ef6e394741000049'>Describe Mozart effect.</option>
-            <option value='56d1a9baab2fed4a47000002'>What is TOPAZ1?</option>
-            <option value='56d1ddd267f0cb3d66000008'>What is the functionality of the Triplex R/bioconductor package?
-            </option>
-        </select></div>
+                                                                                                onchange='update_answers(event)'></select>
+        </div>
         <div class='column3'><h3 id='left-header'>Left Side</h3><h4>Exact</h4>
             <div id='left-exact'><p></p></div>
             <h4>Ideal</h4>
@@ -109,23 +55,14 @@
         </div>
         <div class='column-mid'><h3>Rate This Answer</h3>
             <div class='custom-radios'>
-                <div><input id='unselected' type='radio' name='color' value='-1' checked='true'><label for='unselected'><span><img
-                        src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg'
-                        alt='Checkmark Icon'></img></span><span>Not rated</span></label></input><br/><input id='red'
-                                                                                                            type='radio'
-                                                                                                            name='color'
-                                                                                                            value='0'><label
-                        for='red'><span><img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg'
-                                             alt='Checkmark Icon'></img></span><span>Bad</span></label></input>
-                    <br/><input id='yellow' type='radio' name='color' value='1'><label for='yellow'><span><img
-                            src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg'
-                            alt='Checkmark Icon'></img></span><span>Meh</span></label></input><br/><input id='green'
-                                                                                                          type='radio'
-                                                                                                          name='color'
-                                                                                                          value='2'><label
-                            for='green'><span><img
-                            src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg'
-                            alt='Checkmark Icon'></img></span><span>Good</span></label></input><br/></div>
+                <div><input id='unselected' type='radio' name='color' value='-1' checked='true'></input><label
+                        for='unselected'><span>Not rated</span></label><br/><input id='red' type='radio' name='color'
+                                                                                   value='0'></input><label
+                        for='red'><span>Bad</span></label><br/><input id='yellow' type='radio' name='color'
+                                                                      value='1'></input><label
+                        for='yellow'><span>Meh</span></label><br/><input id='green' type='radio' name='color'
+                                                                         value='2'></input><label
+                        for='green'><span>Good</span></label><br/></div>
             </div>
         </div>
         <div class='column3'><h3 id='right-header'>Right Side</h3><h4>Exact</h4>
@@ -139,8 +76,8 @@
                 <tr>
                     <td class='first-column'>Readability</td>
                     <td><select id='readability' name='readability'>
-                        <option value='R'>Reference is better</option>
                         <option value='C'>Candidate is better</option>
+                        <option value='R'>Reference is better</option>
                         <option value='N' selected='selected'>Please rate this answer</option>
                         <option value='2'>Both are good</option>
                         <option value='0'>Neither is good</option>
@@ -149,8 +86,8 @@
                 <tr>
                     <td>Repetition</td>
                     <td><select id='repetition' name='repetition'>
-                        <option value='R'>Reference is better</option>
                         <option value='C'>Candidate is better</option>
+                        <option value='R'>Reference is better</option>
                         <option value='N' selected='selected'>Please rate this answer</option>
                         <option value='2'>Both are good</option>
                         <option value='0'>Neither is good</option>
@@ -159,8 +96,8 @@
                 <tr>
                     <td>Precision</td>
                     <td><select id='precision' name='precision'>
-                        <option value='R'>Reference is better</option>
                         <option value='C'>Candidate is better</option>
+                        <option value='R'>Reference is better</option>
                         <option value='N' selected='selected'>Please rate this answer</option>
                         <option value='2'>Both are good</option>
                         <option value='0'>Neither is good</option>
@@ -169,8 +106,8 @@
                 <tr>
                     <td>Recall</td>
                     <td><select id='recall' name='recall'>
-                        <option value='R'>Reference is better</option>
                         <option value='C'>Candidate is better</option>
+                        <option value='R'>Reference is better</option>
                         <option value='N' selected='selected'>Please rate this answer</option>
                         <option value='2'>Both are good</option>
                         <option value='0'>Neither is good</option>

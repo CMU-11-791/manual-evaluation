@@ -10,10 +10,11 @@ layout 'layouts/main.gsp',
                 th 'Question'
                 th 'Reference'
                 th 'Type'
-                th 'Readability'
-                th 'Repetition'
-                th 'Precision'
-                th 'Recall'
+                //th 'Readability'
+                //th 'Repetition'
+                //th 'Precision'
+                //th 'Recall'
+                th 'Rating'
             }
             data.each { row ->
                 tr {
@@ -23,10 +24,11 @@ layout 'layouts/main.gsp',
                     td row.question
                     td row.reference
                     td row.type
-                    td row.readability
-                    td row.repetition
-                    td row.precision
-                    td row.recall
+                    //td row.readability
+                    //td row.repetition
+                    //td row.precision
+                    //td row.recall
+                    td row.rating
                 }
             }
         }

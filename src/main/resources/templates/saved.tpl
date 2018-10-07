@@ -21,6 +21,7 @@ layout 'layouts/main.gsp',
                     td 'Type'
                     td data.type
                 }
+                /*
                 tr {
                     td 'Readability'
                     td data.readability
@@ -28,6 +29,11 @@ layout 'layouts/main.gsp',
                 tr {
                     td 'Repetition'
                     td data.repetition
+                }
+                */
+                tr {
+                    td "Rating"
+                    td data.rating
                 }
             }
         }

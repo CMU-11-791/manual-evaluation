@@ -1,12 +1,17 @@
 html {
     head {
         title(title)
-        link rel:'stylesheet', type:'text/css', href:'css/main.css'
-        //if (stylesheet) {
-        //    link rel:'stylesheet', type:'text/css', href:stylesheet
-        //}
-        script(src:'js/jquery.min.js', '')
-        script(src:'js/main.js', '')
+        link rel:'stylesheet', type:'text/css', href:'/css/main.css'
+        if (stylesheet) {
+            link rel:'stylesheet', type:'text/css', href:stylesheet
+        }
+        if (stylesheets) {
+            stylesheets.each { sheet ->
+                link rel:'stylesheet', type:'text/css', href:sheet
+            }
+        }
+        script(src:'/js/jquery.min.js', '')
+        script(src:'/js/main.js', '')
     }
     body {
         div(class:'header') {
@@ -44,7 +49,7 @@ html {
                         ul {
                             li { a href:'/admin/repository', 'Datasets' }
                             li { a href:'/admin/session', 'Session Info' }
-                            //li { a href:'/admin/radios', 'Radio Buttons' }
+                            li { a href:'/admin/radios', 'Radio Buttons' }
                         }
                     }
                     li {

@@ -26,6 +26,9 @@ function update_answers() {
     console.log("Question id " + id)
     $.ajax({url:'/question?id=' + id}).then(function (data) {
         console.log("Update AJAX returned data " + data);
+        if (typeof data.rating != undefined) {
+            $('#' + data.rating).prop('checked', true)
+        }
         if (Math.floor(Math.random() * 2) == 0) {
             console.log('Rolled a 0')
             $('#left-header').html('Reference')
